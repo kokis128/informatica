@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Reparaciones</title>
+</head>
+<body>
+    <h2>Bienvenido, {{ session['user'] }}!</h2>
+
+    <h3>Registrar nuevo dispositivo</h3>
+    <form action='/registrar' method="POST">
+        <label>Dueño del dispositivo:</label>
+        <input type="text" name="nombre" required>
+
+        <label>Curso:</label>
+        <input type="text" name="curso">
+
+        <label>División:</label>
+        <input type="text" name="division">
+
+        <label>Tipo de dispositivo:</label>
+        <input type="text" name="tipo_dispositivo" required>
+
+        <label>Servicio realizado:</label>
+        <textarea name="servicio_realizado" required></textarea>
+
+        <button type="submit">Registrar</button>
+    </form>
+
+    <h3>Lista de dispositivos en mantenimiento</h3>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Registrado por</th>
+            <th>Dueño</th>
+            <th>Curso</th>
+            <th>División</th>
+            <th>Dispositivo</th>
+            <th>Servicio</th>
+            <th>Estado</th>
+            <th>Fecha Entrada</th>
+            <th>Fecha Salida</th>
+            <th>Actualizar Estado</th>
+        </tr>
+        {% for servicio in servicios %}
+        <tr>
+            <td>{{ servicio.id }}</td>
+            <td>{{ servicio.usuario_registro }}</td>
+            <td>{{ servicio.nombre }}</td>  
+            <td>{{ servicio.curso or 'N/A' }}</td>  
+            <td>{{ servicio.division or 'N/A' }}</td>  
+            <td>{{ servicio.tipo_dispositivo }}</td>
+            <td>{{ servicio.servicio_realizado }}</td>
+            <td>{{ servicio.estado }}</td>
+            <td>{{ servicio.fecha_entrada }}</td>
+            <td>{{ servicio.fecha_salida or "N/A" }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('actualizar_estado', id=servicio.id) }}">
+                    <select name="estado" {% if servicio.estado == 'Entregado' %}disabled{% endif %}>
+                        <option value="Pendiente" {% if servicio.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                        <option value="Realizado" {% if servicio.estado == 'Realizado' %}selected{% endif %}>Realizado</option>
+                        <option value="Entregado" {% if servicio.estado == 'Entregado' %}selected{% endif %}>Entregado</option>
+                    </select>
+                    <button type="submit" {% if servicio.estado == 'Entregado' %}disabled{% endif %}>Actualizar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+</body>
+</html>
