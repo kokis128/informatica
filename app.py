@@ -62,9 +62,6 @@ def login():
         return "Credenciales incorrectas"
     
     
-
-    
-    
     
     
     
@@ -184,6 +181,18 @@ def buscar_propietario():
 
     return jsonify(propietario if propietario else {})  # Devuelve {} si no hay resultados
 
+
+@app.route('/delete/<string:id>')
+def delete(id):
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+    print(id)
+    cursor.execute("DELETE FROM servicios WHERE id = %s",(id,))
+    db.commit() 
+    cursor.close()
+    db.close()
+    
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)

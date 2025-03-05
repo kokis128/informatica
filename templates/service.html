@@ -136,6 +136,11 @@
                                     </div>
                                 </form>
                             </td>
+                            <td>
+                                {% if servicio.estado == "Pendiente"  %}
+                                    <a href="/delete/{{ servicio.id }}" class="btn btn-danger ">Eliminar</a>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
