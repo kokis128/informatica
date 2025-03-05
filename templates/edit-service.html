@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Servicio</title>
+</head>
+<body>
+
+    <form action="{{ url_for('registrar') }}" method="POST" class="row g-2">
+        <div class="col-md-4">
+            <label for="dni" class="form-label">DNI:</label>
+            <input type="text" id="dni" name="dni" maxlength="8" class="form-control form-control-sm" required oninput="buscarPropietario()">
+        </div>
+        <div class="col-md-8">
+            <label for="nombre" class="form-label">Apellido y Nombre:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control form-control-sm" required>
+        </div>
+        <div class="col-md-4">
+            <label for="curso" class="form-label">Curso:</label>
+            <input type="text" id="curso" name="curso" class="form-control form-control-sm">
+        </div>
+        <div class="col-md-4">
+            <label for="division" class="form-label">División:</label>
+            <input type="text" id="division" name="division" class="form-control form-control-sm">
+        </div>
+        <div class="col-md-4">
+            <label for="tipo_dispositivo" class="form-label">Tipo de dispositivo:</label>
+            <input type="text" id="tipo_dispositivo" name="tipo_dispositivo" class="form-control form-control-sm" required>
+        </div>
+        <div class="col-12">
+            <label for="servicio_realizado" class="form-label">Servicio realizado:</label>
+            <input type="text" id="servicio_realizado" name="servicio_realizado" class="form-control form-control-sm" required>
+        </div>
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary btn-sm">Registrar</button>
+        </div>
+    </form>
+    
+</body>
+</html>
