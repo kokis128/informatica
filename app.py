@@ -11,7 +11,7 @@ def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="admin",
+        password="1234",
         database="informatica"
     )
 
@@ -59,8 +59,7 @@ def login():
         session['user'] = username  # Guardar usuario en sesión
         return redirect(url_for('index'))
     else:
-        return "Credenciales incorrectas"
-    
+        return "Credenciales incorrectas" 
     
     
     
@@ -101,10 +100,11 @@ def registrar():
         return redirect(url_for('login'))
 
     nombre = request.form['nombre']
-    curso = request.form.get('curso', None)
-    division = request.form.get('division', None)
-    dni = request.form.get('dni', None)
+    curso = request.form.get('curso')
+    division = request.form.get('division')
+    dni = request.form.get('dni')
     tipo_dispositivo = request.form['tipo_dispositivo']
+    numero_serie=request.form['numero_serie']
     servicio_realizado = request.form['servicio_realizado']
     usuario_registro = session['user']
 
@@ -130,9 +130,9 @@ def registrar():
 
     # Insertar el nuevo servicio para el propietario encontrado o registrado
     cursor.execute("""
-        INSERT INTO servicios (propietario_id, usuario_registro, tipo_dispositivo, servicio_realizado, estado)
-        VALUES (%s, %s, %s, %s, 'pendiente')
-    """, (propietario_id, usuario_registro, tipo_dispositivo, servicio_realizado))
+        INSERT INTO servicios (propietario_id, usuario_registro, tipo_dispositivo, servicio_realizado,numero_serie, estado)
+        VALUES (%s, %s, %s, %s,%s, 'pendiente')
+    """, (propietario_id,usuario_registro, tipo_dispositivo,servicio_realizado,numero_serie))
     
     db.commit()
     cursor.close()
@@ -186,13 +186,55 @@ def buscar_propietario():
 def delete(id):
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
-    print(id)
     cursor.execute("DELETE FROM servicios WHERE id = %s",(id,))
     db.commit() 
     cursor.close()
     db.close()
-    
     return redirect(url_for('index'))
+
+@app.route('/update/<id>', methods=['POST'])
+def update_service(id):
+    if request.method=='POST':
+        tipo_dispositivo=request.form['tipo_dispositivo']
+        servicio_realizado=request.form['servicio_realizado']
+        numero_serie=request.form['numero_serie']
+        
+        db = get_db_connection()
+        cursor = db.cursor(dictionary=True)
+        
+       
+       
+        
+
+
+        cursor.execute("""UPDATE servicios SET tipo_dispositivo = %s,
+                    servicio_realizado=%s,
+                    numero_serie=%s
+                    WHERE id =%s                  
+                    """,(tipo_dispositivo, servicio_realizado, numero_serie,id))
+        
+        
+        db.commit() 
+        cursor.close()
+        db.close()
+        flash('Datos Actualizados')
+        return (redirect(url_for('index')))  
+
+
+
+@app.route('/edit/<id>')
+def get_service(id):
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+   
+    cursor.execute("SELECT * from servicios WHERE id = %s",(id,))
+    data= cursor.fetchall()
+   
+    
+    cursor.close()
+    db.close()
+    return render_template('edit-service.html', service=data)
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

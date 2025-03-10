@@ -58,17 +58,21 @@
                             <label for="nombre" class="form-label">Apellido y Nombre:</label>
                             <input type="text" id="nombre" name="nombre" class="form-control form-control-sm" required>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="curso" class="form-label">Curso:</label>
                             <input type="text" id="curso" name="curso" class="form-control form-control-sm">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="division" class="form-label">División:</label>
                             <input type="text" id="division" name="division" class="form-control form-control-sm">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="tipo_dispositivo" class="form-label">Tipo de dispositivo:</label>
                             <input type="text" id="tipo_dispositivo" name="tipo_dispositivo" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="numero_serie" class="form-label">numero serie:</label>
+                            <input type="text" id="numero_serie" name="numero_serie" class="form-control form-control-sm">
                         </div>
                         <div class="col-12">
                             <label for="servicio_realizado" class="form-label">Servicio realizado:</label>
@@ -104,6 +108,7 @@
                             <th>Curso</th>
                             <th>Div.</th>
                             <th>Dispositivo</th>
+                            <th>Numero Serie</th>
                             <th>Servicio</th>
                             <th>Estado</th>
                             <th>Entregado Por</th>
@@ -123,6 +128,7 @@
                             <td>{{ servicio.curso or '-' }}</td>
                             <td>{{ servicio.division or '-' }}</td>
                             <td>{{ servicio.tipo_dispositivo }}</td>
+                            <td>{{ servicio.numero_serie }}</td>
                             <td>{{ servicio.servicio_realizado }}</td>
                       
                             <td>{{ servicio.estado }}</td>
