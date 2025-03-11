@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Servicio</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <style>
         /* Estilos generales */
         body {
@@ -102,11 +103,14 @@
             </div>
           
             <button type="submit" class="btn-submit">Modificar</button>
+            <button href="{{ url_for('index') }}" class="btn-submit-cancel ">Cancelar</button>
             
             
         </form>
-        <button  class="btn-submit-cancel">Cancelar</button>
+       
     </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
 </body>
 </html>

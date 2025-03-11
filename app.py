@@ -11,7 +11,7 @@ def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="1234",
+        password="",
         database="informatica"
     )
 
@@ -81,7 +81,7 @@ def index():
     cursor.execute("""
         SELECT s.*, p.nombre, p.curso, p.division, p.dni
         FROM servicios s 
-        JOIN propietarios p ON s.propietario_id = p.id order by fecha_entrada asc, p.dni asc
+        JOIN propietarios p ON s.propietario_id = p.id order by fecha_entrada desc
         
     """)
     servicios = cursor.fetchall()
@@ -217,7 +217,6 @@ def update_service(id):
         db.commit() 
         cursor.close()
         db.close()
-        flash('Datos Actualizados')
         return (redirect(url_for('index')))  
 
 
