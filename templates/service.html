@@ -52,7 +52,7 @@
                     <form action="{{ url_for('registrar') }}" method="POST" class="row g-2">
                         <div class="col-md-4">
                             <label for="dni" class="form-label">DNI:</label>
-                            <input type="text" id="dni" name="dni" maxlength="8" class="form-control form-control-sm" required oninput="buscarPropietario()">
+                            <input type="text" id="dni" name="dni" maxlength="8" class="form-control form-control-sm" oninput="buscarPropietario()">
                         </div>
                         <div class="col-md-8">
                             <label for="nombre" class="form-label">Apellido y Nombre:</label>
@@ -144,6 +144,17 @@
                                         <button type="submit" class="btn btn-outline-secondary btn-sm" {% if servicio.estado == 'Entregado' %}disabled{% endif %}>Actualizar</button>
                                     </div>
                                 </form>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                {% if servicio.estado == "Pendiente" %}                                    
+                                        <a href="/delete/{{ servicio.id }}" class="btn btn-danger btn-custom">Eliminar</a>                                    
+                                {% endif %}
+                           
+                                {% if servicio.estado == "Pendiente" or servicio.estado == "Realizado" %}                                    
+                                        <a href="/edit/{{ servicio.id }}" class="btn btn-outline-secondary btn-custom">Modificar</a>
+                                    </div>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
