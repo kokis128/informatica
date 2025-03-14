@@ -3,6 +3,13 @@ import mysql.connector
 import bcrypt
 from datetime import datetime
 
+
+from waitress import serve
+ # Asegúrate de que 'app' sea el nombre de tu objeto Flask
+
+
+
+
 app = Flask(__name__)
 app.secret_key = "supersecreto"  # Clave para las sesiones
 
