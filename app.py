@@ -111,7 +111,7 @@ def registrar():
     division = request.form.get('division')
     dni = request.form.get('dni')
     tipo_dispositivo = request.form['tipo_dispositivo']
-    numero_serie=request.form['numero_serie']
+    numero_serie = request.form['numero_serie']
     servicio_realizado = request.form['servicio_realizado']
     usuario_registro = session['user']
 
@@ -119,12 +119,18 @@ def registrar():
     cursor = db.cursor(dictionary=True)
 
     # Buscar si el propietario ya existe por DNI
-    cursor.execute("SELECT id, nombre FROM propietarios WHERE dni = %s", (dni,))
-    propietario = cursor.fetchone()
+    cursor.execute("SELECT id, nombre,dni FROM propietarios WHERE dni = %s", (dni,))
+    propietarios = cursor.fetchall()
 
-    if propietario:
-        propietario_id = propietario['id']
-        flash(f"El propietario {propietario['nombre']} ya está registrado. Se procederá a cargar el servicio.", 'info')
+    if propietarios:
+        propietario = propietarios[0]
+        if propietario is not None and propietario['dni']:
+            propietario_id = propietario['id']
+            flash(f"El propietario {propietario['nombre']} ya está registrado. Se procederá a cargar el servicio.", 'info')
+        else:
+            # Esto no debería ocurrir porque ya se está verificando si existe un propietario.
+            flash("Error al encontrar el propietario. No se pudo registrar el servicio.", 'error')
+            return redirect(url_for('index'))
     else:
         # Si el propietario no existe, lo registramos
         cursor.execute("""
@@ -137,15 +143,16 @@ def registrar():
 
     # Insertar el nuevo servicio para el propietario encontrado o registrado
     cursor.execute("""
-        INSERT INTO servicios (propietario_id, usuario_registro, tipo_dispositivo, servicio_realizado,numero_serie, estado)
-        VALUES (%s, %s, %s, %s,%s, 'pendiente')
-    """, (propietario_id,usuario_registro, tipo_dispositivo,servicio_realizado,numero_serie))
-    
+        INSERT INTO servicios (propietario_id, usuario_registro, tipo_dispositivo, servicio_realizado, numero_serie, estado)
+        VALUES (%s, %s, %s, %s, %s, 'pendiente')
+    """, (propietario_id, usuario_registro, tipo_dispositivo, servicio_realizado, numero_serie))
+
     db.commit()
     cursor.close()
     db.close()
 
     return redirect(url_for('index'))  # Redirigir a la vista principal
+
 
 
 @app.route('/actualizar_estado/<int:id>', methods=['POST'])

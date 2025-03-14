@@ -145,6 +145,17 @@
                                     </div>
                                 </form>
                             </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                {% if servicio.estado == "Pendiente" %}                                    
+                                        <a href="/delete/{{ servicio.id }}" class="btn btn-danger btn-custom">Eliminar</a>                                    
+                                {% endif %}
+                           
+                                {% if servicio.estado == "Pendiente" or servicio.estado == "Realizado" %}                                    
+                                        <a href="/edit/{{ servicio.id }}" class="btn btn-outline-secondary btn-custom">Modificar</a>
+                                    </div>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
